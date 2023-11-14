@@ -1,6 +1,5 @@
 import gsap from "gsap";
-import React, { useContext, useRef, useState } from "react";
-import { ButtonContext } from "./ButtonContext";
+import React, { useEffect, useRef, useState } from "react";
 
 export default function Input(props) {
   // TDMB API Header
@@ -12,15 +11,12 @@ export default function Input(props) {
     },
   };
 
-  const { setClicked } = useContext(ButtonContext);
-
-  const inputRef = useRef();
-  const onEnter = () => {
-    if (isClicked) return;
-    gsap.to(inputRef.current, { y: -140, duration: 2 });
-    setIsClicked(true);
-    setClicked(true);
-  };
+  // const inputRef = useRef();
+  // const onEnter = () => {
+  //   if (isClicked) return;
+  //   gsap.to(inputRef.current, { y: -20, duration: 4 });
+  //   setIsClicked(true);
+  // };
 
   // STATES
   const [firstActor, setFirstActor] = useState("");
@@ -160,7 +156,6 @@ export default function Input(props) {
     <form
       onSubmit={handleButtonClick}
       className=" flex mx-auto flex-col lg:mt-5 mt-2"
-      ref={inputRef}
     >
       <label className=" lg:space-x-14 space-x-4 justify-center font-space-grotesk">
         <input
@@ -177,7 +172,6 @@ export default function Input(props) {
         />
       </label>
       <button
-        onClick={onEnter}
         type="submit"
         className="flex bg-gradient-to-b from-[#ADB4FF] via-[#D1B0FF] to-[#6d3daf] mx-auto mt-6 lg:pl-5 lg:pr-3 lg:py-1 px-3 rounded-full font-grotesque-bold font-bold text-[20px] text-black"
       >
