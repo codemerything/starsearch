@@ -3,11 +3,10 @@ import Info from "@/components/Info";
 import Input from "@/components/Input";
 import { useState } from "react";
 import Results from "@/components/Results";
-import { ButtonContext } from "@/components/ButtonContext";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
   const [movies, setMovies] = useState([]);
-  const [clicked, setClicked] = useState(false);
 
   const addToResults = (filteredMovies) => {
     setMovies(filteredMovies);
@@ -32,11 +31,19 @@ export default function Home() {
     <main className='bg-[url("https://ik.imagekit.io/mmnldm/bg.jpg?updatedAt=1699231064024")] bg-cover bg-no-repeat bg-top bg-fixed'>
       <div className="flex flex-col min-h-screen bg-black bg-opacity-80">
         <Nav />
-        <ButtonContext.Provider value={{ clicked, setClicked }}>
-          <Info />
-          <Input parentFunction={addToResults} />
-          {results}
-        </ButtonContext.Provider>
+        <AnimatePresence>
+          {movies.length === 0 && (
+            <motion.div
+              initial={{ opacity: 1 }}
+              animate={{ opacity: 1 }}
+              exit={{ y: -100, opacity: 0, transition: { duration: 0.5 } }}
+            >
+              <Info />
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <Input parentFunction={addToResults} />
+        {results}
       </div>
     </main>
   );
