@@ -1,29 +1,19 @@
-import gsap from "gsap";
 import React, { useEffect, useRef, useState } from "react";
+import { getTrailer } from "./src/GetTrailer";
+import { getActorID } from "./src/GetActorId";
+import { getActorMovies } from "./src/GetActorMovies";
+import { filterMovies } from "./src/FilterMovies";
+import { Alert, AlertTitle, Stack } from "@mui/material";
 
 export default function Input(props) {
-  // TDMB API Header
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY_TOKEN}`,
-    },
-  };
-
-  // const inputRef = useRef();
-  // const onEnter = () => {
-  //   if (isClicked) return;
-  //   gsap.to(inputRef.current, { y: -20, duration: 4 });
-  //   setIsClicked(true);
-  // };
-
-  // STATES
   const [firstActor, setFirstActor] = useState("");
   const [secondActor, setSecondActor] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
 
+  const ErrorRef = useRef();
+  useEffect(() => {
+    console.log(ErrorRef);
+  }, []);
   // FUNCTIONS TO UPDATE NAMES TO EACH STATE
   const handleFirstInput = (event) => {
     setFirstActor(event.target.value);
@@ -32,124 +22,31 @@ export default function Input(props) {
     setSecondActor(event.target.value);
   };
 
-  // FETCH ACTORID
-  const getActorID = async (actorName) => {
-    try {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/search/person?query=${actorName}&include_adult=false&language=en-US&page=1`,
-        options
-      );
-      const data = await response.json();
-      return data.results[0];
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getActorMovies = async (actorID, actor) => {
-    try {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/person/${actorID}/combined_credits?language=en-US`,
-        options
-      );
-      const data = await response.json();
-      for (let i = 0; i < data.cast.length; i++) {
-        data.cast[i].actorName = actor;
-        if (data.cast[i].media_type === "tv") {
-          data.cast[i].original_title = data.cast[i].original_name;
-        }
-      }
-      return data.cast;
-      console.log(data.cast);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const filterMovies = (firstMovie, secondMovie) => {
-    const firstMovieMap = new Map();
-    const secondMovieMap = new Map();
-
-    for (let i = 0; i < firstMovie.length; i++) {
-      firstMovieMap.set(firstMovie[i].id, firstMovie[i]);
-    }
-    for (let i = 0; i < secondMovie.length; i++) {
-      secondMovieMap.set(secondMovie[i].id, secondMovie[i]);
-    }
-
-    let small;
-    let big;
-
-    if (firstMovieMap.size < secondMovieMap.size) {
-      small = firstMovieMap;
-      big = secondMovieMap;
-    } else {
-      small = secondMovieMap;
-      big = firstMovieMap;
-    }
-
-    let results = [];
-
-    for (let [key, value] of small) {
-      if (
-        big.has(key) &&
-        !value.genre_ids.includes(10763) &&
-        !value.genre_ids.includes(10763) &&
-        !value.genre_ids.includes(10764) &&
-        !value.genre_ids.includes(10767) &&
-        !value.genre_ids.includes(10751) &&
-        !value.genre_ids.includes(99)
-      ) {
-        value.secondActorName = big.get(key).actorName;
-        value.secondCharacterName = big.get(key).character;
-        results.push(value);
-      }
-    }
-
-    results = results.filter(function (element) {
-      return element !== undefined;
-    });
-
-    return results;
-  };
-
-  const getTrailer = async (movieId) => {
-    try {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/movie/${movieId}/videos?language=en-US`,
-        options
-      );
-      const data = await response.json();
-      let prop = "type";
-      let value = "Trailer";
-
-      let resultss = data.results.find((obj) => obj[prop] === value);
-      return `https://www.youtube.com/watch?v=${resultss.key}`;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const handleButtonClick = async (event) => {
     event.preventDefault();
     setIsLoading(true);
 
-    let firstId = await getActorID(firstActor);
-    let secondId = await getActorID(secondActor);
+    if (firstActor && secondActor) {
+      let firstId = await getActorID(firstActor);
+      let secondId = await getActorID(secondActor);
 
-    const firstMovies = await getActorMovies(firstId.id, firstId.name);
-    const secondMovies = await getActorMovies(secondId.id, secondId.name);
+      if (firstId && secondId) {
+        const firstMovies = await getActorMovies(firstId.id, firstId.name);
+        const secondMovies = await getActorMovies(secondId.id, secondId.name);
 
-    const filteredMovies = filterMovies(firstMovies, secondMovies);
+        const filteredMovies = filterMovies(firstMovies, secondMovies);
 
-    for (let index = 0; index < filteredMovies.length; index++) {
-      let trailerLink = await getTrailer(filteredMovies[index].id);
-      filteredMovies[index].trailer = trailerLink;
+        for (let index = 0; index < filteredMovies.length; index++) {
+          let trailerLink = await getTrailer(filteredMovies[index].id);
+          filteredMovies[index].trailer = trailerLink;
+        }
+        props.parentFunction(filteredMovies);
+        setIsLoading(false);
+
+        console.log(filteredMovies);
+      } else if (firstId && !secondId) {
+      }
     }
-    props.parentFunction(filteredMovies);
-    setIsLoading(false);
-
-    console.log(filteredMovies);
   };
 
   return (
@@ -165,6 +62,7 @@ export default function Input(props) {
           className="bg-star-gray lg:pr-4 lg:pl-6 lg:py-3 w-[145px] h-15 px-3 py-1 lg:w-auto lg:h-auto rounded-md text-black lg:text-xl placeholder:text-gray-400 placeholder:font-space-grotesk placeholder:text-[13px] lg:placeholder:text-xl focus:outline-none focus:ring-[#6d3daf] focus:ring-2"
         />
         <input
+          ref={ErrorRef}
           type="text"
           onChange={handleSecondInput}
           placeholder="E.g Meryl Streep"

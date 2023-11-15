@@ -1,19 +1,23 @@
 // Buttons.js
 import Link from "next/link";
 import Logo from "./Logo";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
+import { motion } from "framer-motion";
 
 export default function Nav() {
-  const navRef = useRef();
+  // const navRef = useRef();
 
-  useEffect(() => {
-    console.log(navRef);
-    // TODO add gsap to animate the code below
-    gsap.to(navRef.current, { y: 10, duration: 4, ease: "slow" });
-  }, []);
+  // useEffect(() => {
+  //   console.log(navRef);
+  //   // TODO add gsap to animate the code below
+  //   gsap.to(navRef.current, { y: 10, duration: 4, ease: "slow" });
+  // }, []);
   return (
-    <nav className="justify-between mt-3 mx-2 lg:mx-14" ref={navRef}>
+    <motion.nav
+      className="justify-between mt-3 mx-2 lg:mx-14"
+      initial={{ y: -20 }}
+      animate={{ y: 5 }}
+      transition={{ duration: 2 }}
+    >
       <ul className="flex justify-between space-x-4">
         <Link href={"/h"} className="flex lg:space-x-2 space-x-1 ml-3">
           <Logo></Logo>
@@ -31,6 +35,6 @@ export default function Nav() {
           </Link>
         </li>
       </ul>
-    </nav>
+    </motion.nav>
   );
 }

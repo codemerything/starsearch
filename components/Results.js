@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import yt from "../public/yt.svg";
+import Image from "next/image";
 
 // set state to false
 //check if the description is > 100
@@ -17,24 +20,29 @@ export default function Results({
   trailer,
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setIsLoading] = useState(true);
+
+  const loadingStatus = () => {
+    setIsLoading(false);
+  };
   const toggleText = () => {
     setIsExpanded(!isExpanded);
   };
 
   return (
     <section className="flex flex-col lg:flex-row h-fit justify-center my-10 mb-5 space-x-4 mx-auto leading-relaxed">
-      <div>
-        {poster === null ? (
-          "No poster"
-        ) : (
-          <img
-            src={`https://image.tmdb.org/t/p/original/${poster}`}
-            alt={title}
-            className="lg:w-[35vw] lg:h-[35vw] max-w-[350px] max-h-[350px] rounded-lg mx-auto"
-          />
-        )}
-      </div>
+      {poster === null ? (
+        "No poster"
+      ) : (
+        <LazyLoadImage
+          src={`https://image.tmdb.org/t/p/original/${poster}`}
+          alt={title}
+          onLoad={loadingStatus}
+          placeholderSrc={`https://image.tmdb.org/t/p/original/${poster}`}
+          className="lg:w-[35vw] lg:h-[35vw] max-w-[350px] max-h-[350px] rounded-lg mx-auto"
+          effect={loading ? "blur" : null}
+        />
+      )}
 
       <div className=" lg:w-[30vw] w-fit h-fit text-white text-center">
         <h1 className=" font-grotesque-bold lg:text-3xl font-bold">
@@ -65,9 +73,16 @@ export default function Results({
             {actor2} : {actor2Character}
           </p>
         </div>
-        <a href={trailer} className="font-grotesque-regular font-bold">
-          Watch Trailer
-        </a>
+        <div className="flex justify-center space-x-2">
+          <Image src={yt} alt="Arrow-down" width={20} height={20}></Image>
+          <a
+            href={trailer}
+            className="font-grotesque-regular font-bold"
+            target="_blank"
+          >
+            Watch Trailer
+          </a>
+        </div>
       </div>
     </section>
   );
