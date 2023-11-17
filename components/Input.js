@@ -9,8 +9,17 @@ export default function Input(props) {
   const [firstActor, setFirstActor] = useState("");
   const [secondActor, setSecondActor] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
 
-  const ErrorRef = useRef();
+  const removeClass = (first) => {
+    document.getElementById(first).classList.remove("hidden");
+
+    setTimeout(() => {
+      document.getElementById(first).classList.add("hidden");
+    }, 2000);
+  };
+
+  const ErrorRef = useRef("visible");
   useEffect(() => {
     console.log(ErrorRef);
   }, []);
@@ -24,9 +33,9 @@ export default function Input(props) {
 
   const handleButtonClick = async (event) => {
     event.preventDefault();
-    setIsLoading(true);
 
     if (firstActor && secondActor) {
+      setIsLoading(true);
       let firstId = await getActorID(firstActor);
       let secondId = await getActorID(secondActor);
 
@@ -45,32 +54,58 @@ export default function Input(props) {
 
         console.log(filteredMovies);
       } else if (firstId && !secondId) {
+        removeClass("second-error");
+      } else if (secondId && !firstId) {
+        removeClass("first-error");
+      } else {
+        removeClass("first-error");
+        removeClass("second-error");
       }
+    } else if (firstActor && !secondActor) {
+      removeClass("second-error");
+    } else if (secondActor && !firstActor) {
+      removeClass("first-error");
+    } else {
+      removeClass("second-error");
+      removeClass("first-error");
     }
   };
 
   return (
-    <form
-      onSubmit={handleButtonClick}
-      className=" flex mx-auto flex-col lg:mt-5 mt-2"
-    >
-      <label className=" lg:space-x-14 space-x-4 justify-center font-space-grotesk">
-        <input
-          type="text"
-          onChange={handleFirstInput}
-          placeholder="E.g Anne Hattaway"
-          className="bg-star-gray lg:pr-4 lg:pl-6 lg:py-3 w-[145px] h-15 px-3 py-1 lg:w-auto lg:h-auto rounded-md text-black lg:text-xl placeholder:text-gray-400 placeholder:font-space-grotesk placeholder:text-[13px] lg:placeholder:text-xl focus:outline-none focus:ring-[#6d3daf] focus:ring-2"
-        />
-        <input
-          ref={ErrorRef}
-          type="text"
-          onChange={handleSecondInput}
-          placeholder="E.g Meryl Streep"
-          className="bg-star-gray lg:pr-4 lg:pl-6 lg:py-3 w-[145px] h-15 px-3 py-1 lg:w-auto lg:h-auto rounded-md text-black lg:text-xl placeholder:text-gray-400 placeholder:font-space-grotesk placeholder:text-[13px] lg:placeholder:text-xl focus:outline-none focus:ring-[#6d3daf] focus:ring-2"
-        />
-      </label>
+    <section>
+      <form className=" flex flex-row justify-center space-x-2 mx-auto lg:mt-5 mt-2 relative">
+        <label className=" lg:space-x-14 space-x-4 justify-center items-center font-space-grotesk">
+          <input
+            type="text"
+            onChange={handleFirstInput}
+            placeholder="E.g Anne Hattaway"
+            className="bg-star-gray lg:pr-4 lg:pl-6 lg:py-3 w-[145px] h-15 px-3 py-1 lg:w-auto lg:h-auto rounded-md text-black lg:text-xl placeholder:text-gray-400 placeholder:font-space-grotesk placeholder:text-[13px] lg:placeholder:text-xl focus:outline-none focus:ring-[#6d3daf] focus:ring-2"
+          />
+          <Alert
+            severity="error"
+            className="hidden"
+            ref={ErrorRef}
+            id="first-error"
+          >
+            Incorrect Actor Name
+          </Alert>
+        </label>
+        <label className="lg:space-x-14 space-x-4 justify-center items-center font-space-grotesk">
+          <input
+            ref={ErrorRef}
+            type="text"
+            onChange={handleSecondInput}
+            placeholder="E.g Meryl Streep"
+            className="bg-star-gray lg:pr-4 lg:pl-6 lg:py-3 w-[145px] h-15 px-3 py-1 lg:w-auto lg:h-auto rounded-md text-black lg:text-xl placeholder:text-gray-400 placeholder:font-space-grotesk placeholder:text-[13px] lg:placeholder:text-xl focus:outline-none focus:ring-[#6d3daf] focus:ring-2"
+          />
+          <Alert severity="error" className="hidden" id="second-error">
+            Incorrect Actor Name
+          </Alert>
+        </label>
+      </form>
       <button
         type="submit"
+        onClick={handleButtonClick}
         className="flex bg-gradient-to-b from-[#ADB4FF] via-[#D1B0FF] to-[#6d3daf] mx-auto mt-6 lg:pl-5 lg:pr-3 lg:py-1 px-3 rounded-full font-grotesque-bold font-bold text-[20px] text-black"
       >
         {isLoading ? "Loading..." : "Search"}
@@ -89,6 +124,6 @@ export default function Input(props) {
           />
         </svg>
       </button>
-    </form>
+    </section>
   );
 }
