@@ -11,11 +11,11 @@ export default function Input(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const removeClass = (first) => {
-    document.getElementById(first).classList.remove("hidden");
+  const removeClass = () => {
+    setError(true);
 
     setTimeout(() => {
-      document.getElementById(first).classList.add("hidden");
+      setError(false);
     }, 2000);
   };
 
@@ -54,20 +54,19 @@ export default function Input(props) {
 
         console.log(filteredMovies);
       } else if (firstId && !secondId) {
-        removeClass("second-error");
+        removeClass();
       } else if (secondId && !firstId) {
-        removeClass("first-error");
+        removeClass();
       } else {
-        removeClass("first-error");
-        removeClass("second-error");
+        removeClass();
       }
     } else if (firstActor && !secondActor) {
-      removeClass("second-error");
+      removeClass();
     } else if (secondActor && !firstActor) {
-      removeClass("first-error");
+      removeClass();
     } else {
-      removeClass("second-error");
-      removeClass("first-error");
+      removeClass();
+      removeClass();
     }
   };
 
