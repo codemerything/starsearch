@@ -74,14 +74,19 @@ export default function Results({
           </p>
         </div>
         <div className="flex justify-center space-x-2">
-          <Image src={yt} alt="Arrow-down" width={20} height={20}></Image>
-          <a
-            href={trailer}
-            className="font-grotesque-regular font-bold"
-            target="_blank"
-          >
-            Watch Trailer
-          </a>
+          {trailer === undefined ? null : (
+            <>
+              <Image src={yt} alt="Arrow-down" width={20} height={20} />
+              <a
+                href={trailer}
+                className="font-grotesque-regular font-bold"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Watch Trailer
+              </a>
+            </>
+          )}
         </div>
       </div>
     </section>
