@@ -5,7 +5,7 @@ import {
   getActorMovies,
   filterMovies,
   getTrailer,
-} from "./src/Utils";
+} from "./utils/Utils";
 
 export default function Input(props) {
   const [firstActor, setFirstActor] = useState("");
