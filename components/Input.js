@@ -1,28 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
-import { getTrailer } from "./src/GetTrailer";
-import { getActorID } from "./src/GetActorId";
-import { getActorMovies } from "./src/GetActorMovies";
-import { filterMovies } from "./src/FilterMovies";
 import { Alert, AlertTitle, Stack } from "@mui/material";
+import {
+  getActorID,
+  getActorMovies,
+  filterMovies,
+  getTrailer,
+} from "./src/Utils";
 
 export default function Input(props) {
   const [firstActor, setFirstActor] = useState("");
   const [secondActor, setSecondActor] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
 
-  const removeClass = () => {
-    setError(true);
+  const removeClass = (first) => {
+    document.getElementById(first).classList.remove("hidden");
 
     setTimeout(() => {
-      setError(false);
+      document.getElementById(first).classList.add("hidden");
     }, 2000);
+    setIsLoading(false);
   };
 
-  const ErrorRef = useRef("visible");
-  useEffect(() => {
-    console.log(ErrorRef);
-  }, []);
   // FUNCTIONS TO UPDATE NAMES TO EACH STATE
   const handleFirstInput = (event) => {
     setFirstActor(event.target.value);
@@ -53,20 +51,7 @@ export default function Input(props) {
         setIsLoading(false);
 
         console.log(filteredMovies);
-      } else if (firstId && !secondId) {
-        removeClass();
-      } else if (secondId && !firstId) {
-        removeClass();
-      } else {
-        removeClass();
       }
-    } else if (firstActor && !secondActor) {
-      removeClass();
-    } else if (secondActor && !firstActor) {
-      removeClass();
-    } else {
-      removeClass();
-      removeClass();
     }
   };
 
@@ -80,26 +65,14 @@ export default function Input(props) {
             placeholder="E.g Anne Hattaway"
             className="bg-star-gray lg:pr-4 lg:pl-6 lg:py-3 w-[145px] h-15 px-3 py-1 lg:w-auto lg:h-auto rounded-md text-black lg:text-xl placeholder:text-gray-400 placeholder:font-space-grotesk placeholder:text-[13px] lg:placeholder:text-xl focus:outline-none focus:ring-[#6d3daf] focus:ring-2"
           />
-          <Alert
-            severity="error"
-            className="hidden"
-            ref={ErrorRef}
-            id="first-error"
-          >
-            Incorrect Actor Name
-          </Alert>
         </label>
         <label className="lg:space-x-14 space-x-4 justify-center items-center font-space-grotesk">
           <input
-            ref={ErrorRef}
             type="text"
             onChange={handleSecondInput}
             placeholder="E.g Meryl Streep"
             className="bg-star-gray lg:pr-4 lg:pl-6 lg:py-3 w-[145px] h-15 px-3 py-1 lg:w-auto lg:h-auto rounded-md text-black lg:text-xl placeholder:text-gray-400 placeholder:font-space-grotesk placeholder:text-[13px] lg:placeholder:text-xl focus:outline-none focus:ring-[#6d3daf] focus:ring-2"
           />
-          <Alert severity="error" className="hidden" id="second-error">
-            Incorrect Actor Name
-          </Alert>
         </label>
       </form>
       <button
