@@ -4,13 +4,7 @@ import Logo from "./Logo";
 import { motion } from "framer-motion";
 
 export default function Nav() {
-  // const navRef = useRef();
 
-  // useEffect(() => {
-  //   console.log(navRef);
-  //   // TODO add gsap to animate the code below
-  //   gsap.to(navRef.current, { y: 10, duration: 4, ease: "slow" });
-  // }, []);
   return (
     <motion.nav
       className="justify-between mt-3 mx-2 lg:mx-14"

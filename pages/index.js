@@ -27,6 +27,7 @@ export default function Home() {
       />
     );
   });
+
   return (
     <main className='bg-[url("https://ik.imagekit.io/mmnldm/bg.jpg?updatedAt=1699231064024")] bg-cover lg:bg-no-repeat lg:bg-top bg-fixed'>
       <div className="flex flex-col min-h-screen bg-black bg-opacity-80">

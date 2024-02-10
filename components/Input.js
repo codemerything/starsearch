@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Alert, AlertTitle, Stack } from "@mui/material";
+import React, { useState } from "react";
 import {
   getActorID,
   getActorMovies,
@@ -25,6 +24,7 @@ export default function Input(props) {
   const handleFirstInput = (event) => {
     setFirstActor(event.target.value);
   };
+
   const handleSecondInput = (event) => {
     setSecondActor(event.target.value);
   };
