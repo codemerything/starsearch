@@ -4,7 +4,6 @@
 
   <p align="center">
         <a href="https://whischat.vercel.app/">View Demo</a>
-    .
     
   </p>
 </div>
