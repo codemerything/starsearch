@@ -5,6 +5,7 @@ import {
   filterMovies,
   getTrailer,
 } from "./utils/Utils";
+import Error from "./Error";
 
 export default function Input(props) {
   const [firstActor, setFirstActor] = useState("");
@@ -12,7 +13,7 @@ export default function Input(props) {
   const [isLoading, setIsLoading] = useState(false);
 
   const removeClass = (id) => {
-    document.getElementById(id).classList.remove("hidden");
+    document.querySelector(id).classList.remove("hidden");
 
     setTimeout(() => {
       document.getElementById(id).classList.add("hidden");
@@ -71,9 +72,7 @@ export default function Input(props) {
             placeholder="E.g Anne Hattaway"
             className="bg-star-gray lg:pr-4 lg:pl-6 lg:py-3 w-[145px] h-15 px-3 py-1 lg:w-auto lg:h-auto rounded-md text-black lg:text-xl placeholder:text-gray-400 placeholder:font-space-grotesk placeholder:text-[13px] lg:placeholder:text-xl focus:outline-none focus:ring-[#6d3daf] focus:ring-2"
           />
-          <p className="hidden text-red-600" id={"first_error_message"}>
-            Somethings wrong here
-          </p>
+          <Error cname="hidden" />
         </label>
         <label className="lg:space-x-14 space-x-4 justify-center items-center font-space-grotesk">
           <input
@@ -83,9 +82,7 @@ export default function Input(props) {
             placeholder="E.g Meryl Streep"
             className="bg-star-gray lg:pr-4 lg:pl-6 lg:py-3 w-[145px] h-15 px-3 py-1 lg:w-auto lg:h-auto rounded-md text-black lg:text-xl placeholder:text-gray-400 placeholder:font-space-grotesk placeholder:text-[13px] lg:placeholder:text-xl focus:outline-none focus:ring-[#6d3daf] focus:ring-2"
           />
-          <p className="hidden text-red-600" id={"second_error_message"}>
-            Somethings wrong here
-          </p>
+          <Error cname="text-red-600 " message="Wrong Actor Name" />
         </label>
       </form>
       <button
