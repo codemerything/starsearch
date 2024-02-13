@@ -12,7 +12,7 @@ export default function Nav() {
       transition={{ duration: 2 }}
     >
       <ul className="flex justify-between space-x-4">
-        <Link href={"/h"} className="flex lg:space-x-2 space-x-1 ml-3">
+        <Link href={"/"} className="flex lg:space-x-2 space-x-1 ml-3">
           <Logo></Logo>
           <span className="lg:mt-1 font-bold text-[25px] lg:text-[23px] font-grotesque-bold text-white hidden lg:block">
             starsearrch
