@@ -1,7 +1,7 @@
 import Nav from "@/components/Nav";
 import Info from "@/components/Info";
 import Input from "@/components/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Results from "@/components/Results";
 import { motion, AnimatePresence } from "framer-motion";
 import Error from "@/components/Error";
@@ -9,13 +9,17 @@ import Error from "@/components/Error";
 export default function Home() {
   const [movies, setMovies] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [firstSearch, setFirstSearch] = useState(false);
 
   const addToResults = (filteredMovies) => {
     if (filteredMovies.length === 0) {
       setErrorMessage("NO Results");
+      setMovies(filteredMovies);
+      setFirstSearch(false);
     } else {
       setMovies(filteredMovies);
       setErrorMessage("");
+      setFirstSearch(true);
     }
   };
 
@@ -34,12 +38,12 @@ export default function Home() {
       />
     );
   });
+  console.log(results);
 
   return (
     <main className='bg-[url("https://ik.imagekit.io/mmnldm/bg.jpg?updatedAt=1699231064024")] bg-cover lg:bg-no-repeat lg:bg-top bg-fixed'>
       <div className="flex flex-col min-h-screen bg-black bg-opacity-80">
-        <Nav />
-
+        <Nav />(
         <AnimatePresence>
           {movies.length === 0 && (
             <motion.div
@@ -51,12 +55,9 @@ export default function Home() {
             </motion.div>
           )}
         </AnimatePresence>
+        )
         <Input parentFunction={addToResults} />
-        {results.length === 0 && !errorMessage ? (
-          <Error message={errorMessage} />
-        ) : (
-          results
-        )}
+        {results.length === 0 ? <Error message={errorMessage} /> : results}
       </div>
     </main>
   );
