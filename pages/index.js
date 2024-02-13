@@ -4,12 +4,19 @@ import Input from "@/components/Input";
 import { useState } from "react";
 import Results from "@/components/Results";
 import { motion, AnimatePresence } from "framer-motion";
+import Error from "@/components/Error";
 
 export default function Home() {
   const [movies, setMovies] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const addToResults = (filteredMovies) => {
-    setMovies(filteredMovies);
+    if (filteredMovies.length === 0) {
+      setErrorMessage("NO Results");
+    } else {
+      setMovies(filteredMovies);
+      setErrorMessage("");
+    }
   };
 
   const results = movies.map((movie) => {
@@ -45,7 +52,11 @@ export default function Home() {
           )}
         </AnimatePresence>
         <Input parentFunction={addToResults} />
-        {results}
+        {results.length === 0 && !errorMessage ? (
+          <Error message={errorMessage} />
+        ) : (
+          results
+        )}
       </div>
     </main>
   );
