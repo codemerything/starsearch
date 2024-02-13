@@ -11,14 +11,17 @@ export default function Input(props) {
   const [firstActor, setFirstActor] = useState("");
   const [secondActor, setSecondActor] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [firstErrorMessage, setFirstErrorMessage] = useState("");
+  const [secondErrorMessage, setSecondErrorMessage] = useState("");
+  const [showError, setShowError] = useState(false);
 
-  const removeClass = (id) => {
-    document.querySelector(id).classList.remove("hidden");
+  const removeClass = () => {
+    setIsLoading(false);
+    setShowError(true);
 
     setTimeout(() => {
-      document.getElementById(id).classList.add("hidden");
+      setShowError(false);
     }, 2000);
-    setIsLoading(false);
   };
 
   // FUNCTIONS TO UPDATE NAMES TO EACH STATE
@@ -51,13 +54,24 @@ export default function Input(props) {
         props.parentFunction(filteredMovies);
         setIsLoading(false);
       } else if (firstId && !secondId) {
-        removeClass("second_error_message");
+        removeClass();
+        setSecondErrorMessage("Wrong second Actor");
       } else if (secondId && !firstId) {
-        removeClass("first_error_message");
+        removeClass();
+        setFirstErrorMessage("Wrong first Actor");
       } else {
-        removeClass("first_error_message");
-        removeClass("second_error_message");
+        setFirstErrorMessage("Wrong actor");
+        setSecondErrorMessage("Wrong actor");
       }
+    } else if (firstActor && !secondActor) {
+      removeClass();
+      setSecondErrorMessage("Wrong actor name");
+    } else if (secondActor && !firstActor) {
+      removeClass();
+      setFirstErrorMessage("Wrong actor name");
+    } else {
+      setFirstErrorMessage("Wrong input details");
+      setSecondErrorMessage("Wrong input details");
     }
   };
 
@@ -72,7 +86,7 @@ export default function Input(props) {
             placeholder="E.g Anne Hattaway"
             className="bg-star-gray lg:pr-4 lg:pl-6 lg:py-3 w-[145px] h-15 px-3 py-1 lg:w-auto lg:h-auto rounded-md text-black lg:text-xl placeholder:text-gray-400 placeholder:font-space-grotesk placeholder:text-[13px] lg:placeholder:text-xl focus:outline-none focus:ring-[#6d3daf] focus:ring-2"
           />
-          <Error cname="hidden" />
+          {showError ? <Error message={firstErrorMessage} /> : null}
         </label>
         <label className="lg:space-x-14 space-x-4 justify-center items-center font-space-grotesk">
           <input
@@ -82,7 +96,7 @@ export default function Input(props) {
             placeholder="E.g Meryl Streep"
             className="bg-star-gray lg:pr-4 lg:pl-6 lg:py-3 w-[145px] h-15 px-3 py-1 lg:w-auto lg:h-auto rounded-md text-black lg:text-xl placeholder:text-gray-400 placeholder:font-space-grotesk placeholder:text-[13px] lg:placeholder:text-xl focus:outline-none focus:ring-[#6d3daf] focus:ring-2"
           />
-          <Error cname="text-red-600 " message="Wrong Actor Name" />
+          {showError ? <Error message={secondErrorMessage} /> : null}
         </label>
       </form>
       <button

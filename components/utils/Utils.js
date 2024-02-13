@@ -75,7 +75,7 @@ export const filterMovies = (firstMovie, secondMovie) => {
       !value.genre_ids.includes(35) &&
       !value.genre_ids.includes(10762) &&
       !value.genre_ids.includes(10751) &&
-      !value.name.includes("The Oscars")
+      !value.original_title.includes("The Oscars")
     ) {
       value.secondActorName = big.get(key).actorName;
       value.secondCharacterName = big.get(key).character;
