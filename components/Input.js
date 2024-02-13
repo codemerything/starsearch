@@ -60,6 +60,7 @@ export default function Input(props) {
         removeClass();
         setFirstErrorMessage("Wrong first Actor");
       } else {
+        removeClass();
         setFirstErrorMessage("Wrong actor");
         setSecondErrorMessage("Wrong actor");
       }
@@ -70,6 +71,7 @@ export default function Input(props) {
       removeClass();
       setFirstErrorMessage("Wrong actor name");
     } else {
+      removeClass();
       setFirstErrorMessage("Wrong input details");
       setSecondErrorMessage("Wrong input details");
     }
@@ -96,7 +98,9 @@ export default function Input(props) {
             placeholder="E.g Meryl Streep"
             className="bg-star-gray lg:pr-4 lg:pl-6 lg:py-3 w-[145px] h-15 px-3 py-1 lg:w-auto lg:h-auto rounded-md text-black lg:text-xl placeholder:text-gray-400 placeholder:font-space-grotesk placeholder:text-[13px] lg:placeholder:text-xl focus:outline-none focus:ring-[#6d3daf] focus:ring-2"
           />
-          {showError ? <Error message={secondErrorMessage} /> : null}
+          {showError ? (
+            <Error cname={"text-center"} message={secondErrorMessage} />
+          ) : null}
         </label>
       </form>
       <button
