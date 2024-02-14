@@ -13,9 +13,8 @@ export default function Home() {
 
   const addToResults = (filteredMovies) => {
     if (filteredMovies.length === 0) {
-      setErrorMessage("NO Results");
+      setErrorMessage("NO Results for this search");
       setMovies(filteredMovies);
-      setFirstSearch(false);
     } else {
       setMovies(filteredMovies);
       setErrorMessage("");
@@ -43,21 +42,27 @@ export default function Home() {
   return (
     <main className='bg-[url("https://ik.imagekit.io/mmnldm/bg.jpg?updatedAt=1699231064024")] bg-cover lg:bg-no-repeat lg:bg-top bg-fixed'>
       <div className="flex flex-col min-h-screen bg-black bg-opacity-80">
-        <Nav />(
+        <Nav />
+
         <AnimatePresence>
-          {movies.length === 0 && (
-            <motion.div
-              initial={{ opacity: 1 }}
-              animate={{ opacity: 1 }}
-              exit={{ y: -100, opacity: 0, transition: { duration: 1 } }}
-            >
-              <Info />
-            </motion.div>
-          )}
+          {firstSearch ||
+            (results.length === 0 && (
+              <motion.div
+                initial={{ opacity: 1 }}
+                animate={{ opacity: 1 }}
+                exit={{ y: -100, opacity: 0, transition: { duration: 1 } }}
+              >
+                <Info />
+              </motion.div>
+            ))}
         </AnimatePresence>
-        )
+
         <Input parentFunction={addToResults} />
-        {results.length === 0 ? <Error message={errorMessage} /> : results}
+        {results.length === 0 ? (
+          <Error cname={"text-center"} message={errorMessage} />
+        ) : (
+          results
+        )}
       </div>
     </main>
   );
