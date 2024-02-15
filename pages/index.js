@@ -13,7 +13,7 @@ export default function Home() {
 
   const addToResults = (filteredMovies) => {
     if (filteredMovies.length === 0) {
-      setErrorMessage("No Results for this search");
+      setErrorMessage("No results for this search");
       setMovies(filteredMovies);
     } else {
       setMovies(filteredMovies);
