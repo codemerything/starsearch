@@ -13,7 +13,7 @@ export default function Home() {
 
   const addToResults = (filteredMovies) => {
     if (filteredMovies.length === 0) {
-      setErrorMessage("NO Results for this search");
+      setErrorMessage("No Results for this search");
       setMovies(filteredMovies);
     } else {
       setMovies(filteredMovies);
@@ -59,7 +59,10 @@ export default function Home() {
 
         <Input parentFunction={addToResults} />
         {results.length === 0 ? (
-          <Error cname={"text-center"} message={errorMessage} />
+          <Error
+            cname={"flex justify-center text-center text-red-400 text-2xl mt-3"}
+            message={errorMessage}
+          />
         ) : (
           results
         )}
