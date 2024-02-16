@@ -28,5 +28,5 @@
 ![Preview of Starsearch](https://github.com/mmnldm/starsearch/blob/master/public/landing%20page.jpeg)
 
 ## 🙏🏾 Support 
-If you like the idea behind this project. Don't forget to star🌟
+If you like the idea behind this project. Don't forget to star it🌟
 
