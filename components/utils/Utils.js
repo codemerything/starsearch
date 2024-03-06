@@ -32,7 +32,6 @@ export const getActorMovies = async (actorID, actor) => {
         data.cast[i].original_title = data.cast[i].original_name;
       }
     }
-    console.log(data.cast);
     return data.cast;
   } catch (error) {
     console.log(error);
@@ -72,10 +71,10 @@ export const filterMovies = (firstMovie, secondMovie) => {
       !value.genre_ids.includes(10767) &&
       !value.genre_ids.includes(10751) &&
       !value.genre_ids.includes(99) &&
-      !value.genre_ids.includes(35) &&
       !value.genre_ids.includes(10762) &&
       !value.genre_ids.includes(10751) &&
-      !value.original_title.includes("The Oscars")
+      !value.original_title.includes("The Oscars") &&
+      !value.original_title.includes("MTV Movie & TV Awards")
     ) {
       value.secondActorName = big.get(key).actorName;
       value.secondCharacterName = big.get(key).character;
@@ -86,7 +85,6 @@ export const filterMovies = (firstMovie, secondMovie) => {
   results = results.filter(function (element) {
     return element !== undefined;
   });
-  console.log(results);
 
   return results;
 };

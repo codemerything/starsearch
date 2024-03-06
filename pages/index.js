@@ -37,7 +37,6 @@ export default function Home() {
       />
     );
   });
-  console.log(results);
 
   return (
     <main className='bg-[url("https://ik.imagekit.io/mmnldm/bg.jpg?updatedAt=1699231064024")] bg-cover lg:bg-no-repeat lg:bg-top bg-fixed'>

@@ -3,12 +3,6 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import yt from "../public/yt.svg";
 import Image from "next/image";
 
-// set state to false
-//check if the description is > 100
-// add read more toggle button
-// onclick of read more show full description
-// else slice it from 0, 100 and show "read less"
-
 export default function Results({
   title,
   poster,
@@ -32,7 +26,9 @@ export default function Results({
   return (
     <section className="flex flex-col lg:flex-row h-fit justify-center my-10 mb-5 space-x-4 mx-auto leading-relaxed">
       {poster === null ? (
-        "No poster"
+        <div className="bg-white px-2 flex items-center font-grotesque-bold">
+          NO POSTER AVAILABLE
+        </div>
       ) : (
         <LazyLoadImage
           src={`https://image.tmdb.org/t/p/original/${poster}`}
